@@ -23,14 +23,12 @@
 	<div class="container">
 		<div class="row justify-content-lg-around my-5">
 			<%
-			session.setAttribute("1", 0);
+				session.setAttribute("1", 0);
 			session.setAttribute("2", 0);
 			session.setAttribute("3", 0);
 			session.setAttribute("4", 0);
 			session.setAttribute("5", 0);
-			
 
-			
 			String dbUrl = "jdbc:mysql://localhost:3306/demo";
 			String username = "root";
 			String password = "";
@@ -44,92 +42,102 @@
 				conn = DriverManager.getConnection(dbUrl, username, password);
 
 				if (conn != null) {
-			
+					System.out.println("Connection Successful");
 				}
-			Enumeration<String> names = request.getParameterNames();
-			String action = request.getParameter("action");
-			int i;
-			PreparedStatement ps;
-			if(request.getParameter("uname").isEmpty() || request.getParameter("pass").isEmpty()) {
-				%>
-				<div class="col-lg-12 alert alert-dismissible fade show alert-primary" role="alert" >
-					<%
-						out.print("Login Failed");
-					%>
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-	    <span aria-hidden="true">&times;</span>
-	  </button>
-				</div>
+				Enumeration<String> names = request.getParameterNames();
+				String action = request.getParameter("action");
+				int i;
+				PreparedStatement ps;
+				if (request.getParameter("uname").isEmpty() || request.getParameter("pass").isEmpty()) {
+			%>
+			<div
+				class="col-lg-12 alert alert-dismissible fade show alert-primary"
+				role="alert">
 				<%
-			
-			}
+					out.print("Login Failed");
+				%>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<%
+				}
 			switch (action) {
 			case "Register":
-				ps=conn.prepareStatement("insert into users values(?,?)");
-				i=1;
-				while(names.hasMoreElements()) {
-					if(i==3) {
-						break;
+				ps = conn.prepareStatement("insert into users values(?,?)");
+				i = 1;
+				while (names.hasMoreElements()) {
+					if (i == 3) {
+				break;
 					}
-					ps.setString(i,request.getParameter(names.nextElement()));
+					ps.setString(i, request.getParameter(names.nextElement()));
 					i++;
 				}
 
 				ps.executeUpdate();
-				%>
-				<div class="col-lg-12 alert alert-dismissible fade show alert-primary" role="alert" >
-					<%
-						out.print("Registration successful");
-					%>
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-	    <span aria-hidden="true">&times;</span>
-	  </button>
-				</div>
+			%>
+			<div
+				class="col-lg-12 alert alert-dismissible fade show alert-primary"
+				role="alert">
 				<%
+					out.print("Registration successful");
+				%>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<%
 				break;
-				
-			
-				case "Login":
-					ps=conn.prepareStatement("select * from users where uname=? and pass=?");
-					i=1;
-					while(names.hasMoreElements()) {
-						if(i==3) {
-							break;
-						}
-						ps.setString(i,request.getParameter(names.nextElement()));
-						i++;
-					}
-			
-					ResultSet rs=ps.executeQuery();
-					boolean flag=false;
-					while(rs.next()) {
 
-						flag=true;
-					}
-					if(flag) {
-						session.setAttribute("username",request.getParameter("uname"));
+						case "Login":
+							ps = conn.prepareStatement("select * from users where uname=? and pass=?");
+							i = 1;
+							while (names.hasMoreElements()) {
+								if (i == 3) {
+									break;
+								}
+								ps.setString(i, request.getParameter(names.nextElement()));
+								i++;
+							}
+
+							ResultSet rs = ps.executeQuery();
+							boolean flag = false;
+							while (rs.next()) {
+
+								flag = true;
+							}
+							if (flag) {
+								session.setAttribute("username", request.getParameter("uname"));
 			%>
 			<jsp:forward page="home.jsp">
-			  <jsp:param name="qno" value="1" ></jsp:param>
-			  </jsp:forward>
-			<div class="col-lg-12 alert alert-dismissible fade show alert-primary" role="alert" >
+				<jsp:param name="qno" value="1"></jsp:param>
+			</jsp:forward>
+			<div
+				class="col-lg-12 alert alert-dismissible fade show alert-primary"
+				role="alert">
 				<%
-				
 					out.print("Login successful");
 				%>
-				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
-			<% }else{
+			<%
+				} else {
 			%>
-			<div class="col-lg-12 alert alert-dismissible fade show alert-primary" role="alert" >
+			<div
+				class="col-lg-12 alert alert-dismissible fade show alert-primary"
+				role="alert">
 				<%
 					out.print("User does not exist");
 				%>
-				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<%
 				}
@@ -139,40 +147,49 @@
 			conn.close();
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
-				%>
-			<div class="col-lg-12 alert alert-dismissible fade show alert-primary" role="alert" >
+			%>
+			<div
+				class="col-lg-12 alert alert-dismissible fade show alert-primary"
+				role="alert">
 				<%
 					out.print(e.getMessage());
 				%>
-				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<%
 				e.printStackTrace();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 			%>
-			<div class="col-lg-12 alert alert-dismissible fade show alert-primary" role="alert" >
+			<div
+				class="col-lg-12 alert alert-dismissible fade show alert-primary"
+				role="alert">
 				<%
 					out.print(e.getMessage());
 				%>
-				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<%
 				e.printStackTrace();
 			} catch (NullPointerException e) {
 				// TODO Auto-generated catch block
-				%>
-			<div class="col-lg-12 alert alert-dismissible fade show alert-primary" role="alert" >
+			%>
+			<div
+				class="col-lg-12 alert alert-dismissible fade show alert-primary"
+				role="alert">
 				<%
 					out.print(e.getMessage());
 				%>
-				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<%
 				e.printStackTrace();

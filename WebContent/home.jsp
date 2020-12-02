@@ -14,8 +14,9 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-  
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+
 <title>HOME</title>
 <script type="text/javascript">
 
@@ -36,130 +37,167 @@ setInterval(()=>{
 	style="background-image: url('bg.jpg'); background-color: #cccccc; background-position: center; background-repeat: no-repeat; background-size: cover;">
 
 	<div class="container">
-	<div class="row justify-content-lg-around my-5">
-	<%
-	String dbUrl = "jdbc:mysql://localhost:3306/demo";
-	String username = "root";
-	String password = "";
+		<div class="row justify-content-lg-around my-5">
+			<%
+				String dbUrl = "jdbc:mysql://localhost:3306/demo";
+			String username = "root";
+			String password = "";
 
-	Connection conn = null;
-	response.setContentType("text/html");
-	
-	try {
-		Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = null;
+			response.setContentType("text/html");
 
-		conn = DriverManager.getConnection(dbUrl, username, password);
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
 
-		if (conn != null) {
-	
-		}
+				conn = DriverManager.getConnection(dbUrl, username, password);
 
+				if (conn != null) {
 
-	
-	PreparedStatement ps;
- Integer qno=Integer.valueOf(request.getParameter("qno"));	
-switch(qno){
-case 1:break;
-case 2:;
-case 3:;
-case 4:;
-case 5:;
-case 6: session.setAttribute(""+(qno-1)+"",request.getParameter("answer")!=null?request.getParameter("answer"):0);break;
-}
-if(qno==6){
-	conn.close();
-	%>
-	<jsp:forward page="result.jsp">
-	  <jsp:param name="qno" value="1" ></jsp:param>
-	  </jsp:forward>
-	  <%
-}
-	ps=conn.prepareStatement("select * from questions where id=?");
-	ps.setInt(1,qno);
-	System.out.print(ps.toString());
-	ResultSet rs=ps.executeQuery();
-	rs.next();
-	%>
-	<div class="card col-lg-12 ">
-	<h1 id="timer">0</h1>
- <div class="card-body">
-<div class="card-title"><% out.print(rs.getString("question"));%></div>
+				}
 
-	 <form  class="p-3" action="home.jsp" method="post" name="register">
+				PreparedStatement ps;
+				Integer qno = Integer.valueOf(request.getParameter("qno"));
+				switch (qno) {
+				case 1:
+					break;
+				case 2:
+					;
+				case 3:
+					;
+				case 4:
+					;
+				case 5:
+					;
+				case 6:
+					session.setAttribute("" + (qno - 1) + "",
+					request.getParameter("answer") != null ? request.getParameter("answer") : 0);
+					break;
+				}
+				if (qno == 6) {
+					conn.close();
+			%>
+			<jsp:forward page="result.jsp">
+				<jsp:param name="qno" value="1"></jsp:param>
+			</jsp:forward>
+			<%
+				}
+			ps = conn.prepareStatement("select * from questions where id=?");
+			ps.setInt(1, qno);
+			System.out.print(ps.toString());
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			%>
+			<div class="card col-lg-12 ">
+				<h1 id="timer">0</h1>
+				<div class="card-body">
+					<div class="card-title">
+						<%
+							out.print(rs.getString("question"));
+						%>
+					</div>
 
-<div class="form-group col-md-6">
-     
-      <input  type="radio" id="o1" name="answer" value="1"  >
-       <label for="o1"><%out.print(rs.getString("option1")); %></label>
-      </div>
-      <div class="form-group col-md-6">
-      <input type="radio" id="o2" name="answer" value="2"  >
-       <label for="o2"><%out.print(rs.getString("option2")); %></label>
-     
-   </div>
-    <div class="form-group col-md-6">
-      <input type="radio" id="o3" name="answer" value="3"  >
-       <label for="o3"><%out.print(rs.getString("option3")); %></label>
-     
-   </div> <div class="form-group col-md-6">
-      <input type="radio" id="o4" name="answer" value="4"  >
-       <label for="o4"><%out.print(rs.getString("option4")); %></label>
-     
-   </div>
-    <input name="qno" value=<%out.print(++qno);%> type="hidden">
-   <div class="form-group col-md-6">
- 
-  <input value="Next" type="submit" class="btn btn-primary">
+					<form class="p-3" action="home.jsp" method="post" name="register">
 
-</div>
-</form>
-</div>
-	</div>
-	
-	<%
-	conn.close();
-	}catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		%>
-	<div class="col-lg-12 alert alert-dismissible fade show alert-primary" role="alert" >
-		<%
-			out.print(e.getMessage());
-		%>
-		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-	</div>
-	<%
-		e.printStackTrace();
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-	%>
-	<div class="col-lg-12 alert alert-dismissible fade show alert-primary" role="alert" >
-		<%
-			out.print(e.getMessage());
-		%>
-		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-	</div>
-	<%
-		e.printStackTrace();
-	}catch (NullPointerException e) {
-		// TODO Auto-generated catch block
-		%>
-	<div class="col-lg-12 alert alert-dismissible fade show alert-primary" role="alert" >
-		<%
-			out.print(e.getMessage());
-		%>
-		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-	</div>
-	<%
-		e.printStackTrace();
-	}
-	%>
-		
+						<div class="form-group col-md-6">
+
+							<input type="radio" id="o1" name="answer" value="1"> <label
+								for="o1">
+								<%
+									out.print(rs.getString("option1"));
+								%>
+							</label>
+						</div>
+						<div class="form-group col-md-6">
+							<input type="radio" id="o2" name="answer" value="2"> <label
+								for="o2">
+								<%
+									out.print(rs.getString("option2"));
+								%>
+							</label>
+
+						</div>
+						<div class="form-group col-md-6">
+							<input type="radio" id="o3" name="answer" value="3"> <label
+								for="o3">
+								<%
+									out.print(rs.getString("option3"));
+								%>
+							</label>
+
+						</div>
+						<div class="form-group col-md-6">
+							<input type="radio" id="o4" name="answer" value="4"> <label
+								for="o4">
+								<%
+									out.print(rs.getString("option4"));
+								%>
+							</label>
+
+						</div>
+						<input name="qno" value=<%out.print(++qno);%> type="hidden">
+						<div class="form-group col-md-6">
+
+							<input id="next" value="Next" type="submit"
+								class="btn btn-primary">
+
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<%
+				conn.close();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+			%>
+			<div
+				class="col-lg-12 alert alert-dismissible fade show alert-primary"
+				role="alert">
+				<%
+					out.print(e.getMessage());
+				%>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<%
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+			%>
+			<div
+				class="col-lg-12 alert alert-dismissible fade show alert-primary"
+				role="alert">
+				<%
+					out.print(e.getMessage());
+				%>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<%
+				e.printStackTrace();
+			} catch (NullPointerException e) {
+				// TODO Auto-generated catch block
+			%>
+			<div
+				class="col-lg-12 alert alert-dismissible fade show alert-primary"
+				role="alert">
+				<%
+					out.print(e.getMessage());
+				%>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<%
+				e.printStackTrace();
+			}
+			%>
+
 		</div>
 	</div>
 
@@ -177,5 +215,5 @@ if(qno==6){
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
 		crossorigin="anonymous"></script>
 </body>
-   
+
 </html>
